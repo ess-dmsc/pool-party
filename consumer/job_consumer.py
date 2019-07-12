@@ -10,7 +10,7 @@ def print_assignment(_, partitions):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--broker", help="Address for the Kafka broker", default="localhost")
+    parser.add_argument("--broker", help="Address for the Kafka broker", default="kafka:29092")
     parser.add_argument("--topic", help="Topic to publish messages to", default="job_queue")
     args = parser.parse_args()
 
