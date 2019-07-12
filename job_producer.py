@@ -1,12 +1,14 @@
 import argparse
 import sys
+from time import sleep
 from confluent_kafka import Producer
 from confluent_kafka.admin import AdminClient, NewTopic
 
 
-def create_job_queue_topic(topic_name: str, number_of_partitions: int, broker: str):
+def create_job_queue_topic(topic_name: str, number_of_partitions: int, broker: str, stop_topic: str):
     admin_client = AdminClient({'bootstrap.servers': broker})
-    fs = admin_client.create_topics([NewTopic(topic_name, num_partitions=3, replication_factor=number_of_partitions)])
+    fs = admin_client.create_topics([NewTopic(topic_name, num_partitions=number_of_partitions, replication_factor=1),
+                                     NewTopic(stop_topic, num_partitions=1, replication_factor=1)])
 
     for topic, f in fs.items():
         try:
@@ -24,7 +26,8 @@ if __name__ == "__main__":
     parser.add_argument("--consumers-in-pool", default=10)
     args = parser.parse_args()
 
-    create_job_queue_topic(args.topic, args.consumers_in_pool, args.broker)
+    stop_topic = 'kill_all_consumers'
+    create_job_queue_topic(args.topic, args.consumers_in_pool, args.broker, stop_topic)
 
     conf = {'bootstrap.servers': args.broker}
     p = Producer(**conf)
@@ -33,6 +36,10 @@ if __name__ == "__main__":
     for message_id in range(args.number_of_jobs):
         p.produce(args.topic, f'{{"id": "{message_id}", "job_length": "{job_length}"}}')
         p.poll()
+
+    sleep(10)
+    p.produce(stop_topic, 'STOP')
+    p.poll()
 
     sys.stderr.write('%% Waiting for %d deliveries\n' % len(p))
     p.flush()
