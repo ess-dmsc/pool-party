@@ -1,7 +1,7 @@
 FROM python:3
 
 ADD job_consumer.py /
-ADD ../requirements.txt /
+ADD requirements.txt /
 
 RUN pip install -r requirements.txt
 

@@ -1,8 +1,9 @@
 Prototype write job distribution for a pool of file writers
 -----------------------------------------------------------
 
-Install requirements with:
-```
-pip install -r requirements.txt
-```
+Requires docker-compose to run.
 
+Run with:
+```
+docker-compose up -d --scale consumer=10 --build
+```

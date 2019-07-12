@@ -18,7 +18,7 @@ if __name__ == "__main__":
             'auto.offset.reset': 'earliest'}
 
     c = Consumer(conf)
-    c.subscribe(args.topic, on_assign=print_assignment)
+    c.subscribe([args.topic], on_assign=print_assignment)
 
     stop_consumer = Consumer({'bootstrap.servers': args.broker, 'group.id': uuid1, 'auto.offset.reset': 'earliest'})
 
