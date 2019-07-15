@@ -18,6 +18,7 @@ if __name__ == "__main__":
             'auto.offset.reset': 'earliest'}
 
     c = Consumer(conf)
+    c = Consumer(conf)
     subscribed = False
     while not subscribed:
         try:
@@ -27,9 +28,15 @@ if __name__ == "__main__":
         subscribed = True
 
     stop_consumer = Consumer({'bootstrap.servers': args.broker, 'group.id': uuid1, 'auto.offset.reset': 'earliest'})
+    stop_consumer.subscribe(['kill_all_consumers'])
 
     while True:
-        stop_consumer.poll(timeout=1.0)
+        stop_msg = stop_consumer.poll(timeout=1.0)
+        if stop_msg is not None:
+            if stop_msg.value() == b"STOP":
+                print("Received STOP message")
+                break
+
         msg = c.poll(timeout=1.0)
         if msg is None:
             continue
