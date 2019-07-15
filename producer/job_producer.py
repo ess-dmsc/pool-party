@@ -7,7 +7,8 @@ from uuid import uuid1
 import random
 
 
-def create_job_queue_topic(topic_name: str, number_of_partitions: int, broker: str, stop_topic: str, job_report_topic: str):
+def create_job_queue_topic(topic_name: str, number_of_partitions: int, broker: str, stop_topic: str,
+                           job_report_topic: str):
     print("Checking if Kafka is up...", flush=True)
     admin_client = AdminClient({'bootstrap.servers': broker})
 
@@ -75,7 +76,7 @@ if __name__ == "__main__":
     print("Start producing job messages")
     sleep(20)  # Wait plenty of time for topic to initialise
     for message_id in range(args.number_of_jobs):
-        p.produce(args.topic, f'{{"id": "{message_id}", "job_length": "{random.randint(1,9)}"}}')
+        p.produce(args.topic, f'{{"id": "{message_id}", "job_length": "{random.randint(1, 9)}"}}')
         p.poll(timeout=5)
 
     check_job_reports(args.number_of_jobs)
