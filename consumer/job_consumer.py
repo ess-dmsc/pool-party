@@ -21,7 +21,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     conf = {'bootstrap.servers': args.broker, 'group.id': 'job_consumer', 'session.timeout.ms': 6000,
-            'auto.offset.reset': 'earliest', 'max.in.flight.requests.per.connection': 1}
+            'auto.offset.reset': 'earliest', 'max.in.flight.requests.per.connection': 1, 'queued.min.messages': 1}
 
     consumer = Consumer(conf)
     subscribed = False
