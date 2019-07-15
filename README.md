@@ -12,6 +12,8 @@ and bring down with
 docker-compose down -v
 ```
 
+You might want to use a tool like [lazydocker](https://github.com/jesseduffield/lazydocker/) to see what is going on in the producer and consumer logs while it is running.
+
 ## What it does
 
 The producer publishes 100 jobs to a `job_queue` topic. Each job consists of a JSON message with an `id` field and a random `job_length` of between 1 and 9 seconds.
