@@ -21,7 +21,3 @@ The producer publishes 100 jobs to a `job_queue` topic. Each job consists of a J
 Once the producer has published all the jobs it collects messages from the `job_report` topic until it has received reports for every job, prints a sorted list of the job IDs to screen and then tells the consumers to stop.
 
 If each job was completed once then the output list from the producer will be consecutive numbers 0 to 99.
-
-## Still to investigate
-
-
