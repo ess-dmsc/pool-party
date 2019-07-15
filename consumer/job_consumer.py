@@ -39,6 +39,7 @@ if __name__ == "__main__":
     producer = Producer(**conf)
 
     while True:
+        consumer.subscribe([args.topic])
         stop_msg = stop_consumer.poll(timeout=1.0)
         if stop_msg is not None:
             if stop_msg.value() == b"STOP":
@@ -55,6 +56,7 @@ if __name__ == "__main__":
             sys.stderr.write('%% %s [%d] at offset %d with key %s:\n' %
                              (msg.topic(), msg.partition(), msg.offset(),
                               str(msg.key())))
+        consumer.unsubscribe()
         msg_data = json.loads(msg.value())
         print(f'Doing job {msg_data["id"]}')
         sleep(int(msg_data['job_length']))
