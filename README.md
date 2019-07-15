@@ -7,3 +7,8 @@ Run with:
 ```
 docker-compose up -d --scale consumer=10 --build
 ```
+
+and bring down with
+```
+docker-compose down -v
+```
