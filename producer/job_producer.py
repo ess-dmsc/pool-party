@@ -6,7 +6,9 @@ from confluent_kafka.admin import AdminClient, NewTopic
 
 
 def create_job_queue_topic(topic_name: str, number_of_partitions: int, broker: str, stop_topic: str):
-    admin_client = AdminClient({'bootstrap.servers': [broker]})
+    print("Checking if Kafka is up...", flush=True)
+    sleep(20)
+    admin_client = AdminClient({'bootstrap.servers': broker})
 
     kafka_up = False
     md = ""
@@ -53,7 +55,7 @@ if __name__ == "__main__":
 
     sleep(10)
     p.produce(stop_topic, 'STOP')
-    p.poll()
+    p.poll(timeout=5)
 
     sys.stderr.write('%% Waiting for %d deliveries\n' % len(p))
     p.flush()

@@ -5,4 +5,4 @@ ADD requirements.txt /
 
 RUN pip install -r requirements.txt
 
-CMD [ "python", "./job_producer.py" ]
+CMD [ "python", "-u", "./job_producer.py" ]
